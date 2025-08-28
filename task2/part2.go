@@ -29,19 +29,20 @@ func Pointer2(arr *[]int) {
 func Goroutine1() {
 	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for i := 1; i <= 10; i += 2 {
 			fmt.Println(i, "--协程1")
 		}
-		wg.Done()
 	}()
 
 	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for i := 2; i <= 10; i += 2 {
 			fmt.Println(i, "==协程2")
 		}
 	}()
-	wg.Done()
+
 	wg.Wait()
 }
 
@@ -51,9 +52,9 @@ func Goroutine2(arr []func()) {
 	for _, f := range arr {
 		go func() {
 			defer wg.Done()
-			startUnix := time.Now().UnixMilli()
+			start := time.Now().UnixMilli()
 			f()
-			fmt.Printf("耗时：%v 毫秒\n", time.Now().UnixMilli()-startUnix)
+			fmt.Printf("耗时：%v 毫秒\n", time.Now().UnixMilli()-start)
 		}()
 	}
 	wg.Wait()
@@ -112,20 +113,20 @@ func Channel1() {
 
 	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for i := 1; i <= 10; i++ {
 			ch <- i
 			fmt.Println("发送一个：", i)
 		}
 		close(ch)
-		wg.Done()
 	}()
 
 	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for v := range ch {
 			fmt.Println("接收到一个：", v)
 		}
-		wg.Done()
 	}()
 
 	wg.Wait()
@@ -137,20 +138,20 @@ func Channel2() {
 
 	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for i := 1; i <= 100; i++ {
 			ch <- i
 			fmt.Println("生产者发送一个：", i)
 		}
 		close(ch)
-		wg.Done()
 	}()
 
 	wg.Add(1)
 	go func() {
+		wg.Done()
 		for v := range ch {
 			fmt.Println("消费者接收到一个：", v)
 		}
-		wg.Done()
 	}()
 
 	wg.Wait()
@@ -163,12 +164,12 @@ func Lock1() {
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			for j := 0; j < 1000; j++ {
 				lock.Lock()
 				num += 1
 				lock.Unlock()
 			}
-			wg.Done()
 		}()
 	}
 	wg.Wait()
@@ -181,10 +182,10 @@ func Lock2() {
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			for j := 0; j < 1000; j++ {
 				atomic.AddInt64(&num, 1)
 			}
-			wg.Done()
 		}()
 	}
 	wg.Wait()
