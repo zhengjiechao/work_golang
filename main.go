@@ -1,5 +1,9 @@
 package main
 
+import (
+	"work_golang/task3"
+)
+
 func main() {
 
 	// 任务一
@@ -100,5 +104,43 @@ func main() {
 
 	// // 5.2
 	// task2.Lock2()
+
+	// 任务三
+	// 1.2转账
+	// task3.Trans()
+
+	// 2.1
+	// employeeArr := task3.Query1()
+	// fmt.Println(employeeArr)
+
+	// employee := task3.Query2()
+	// fmt.Println(employee)
+
+	// 2.2
+	// booArr := task3.QueryBook()
+	// fmt.Println(booArr)
+
+	// 3.1
+	// task3.CreateTable()
+
+	// 3.2
+	// users := task3.QueryUsers()
+	// fmt.Println(users)
+	// post := task3.QueryPost()
+	// fmt.Println(post)
+
+	// 3.3
+	// post := task3.Post{
+	// 	Title:  "语文",
+	// 	UserId: 1,
+	// 	Status: "无评论",
+	// }
+	// task3.DB.Create(&post)
+
+	comment := task3.Comment{
+		Id:     2,
+		PostId: 2,
+	}
+	task3.DB.Delete(&comment)
 
 }
