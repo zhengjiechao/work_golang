@@ -1,7 +1,10 @@
 package main
 
 import (
-	"work_golang/task3"
+	"work_golang/task4/models"
+	"work_golang/task4/routers"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -137,10 +140,20 @@ func main() {
 	// }
 	// task3.DB.Create(&post)
 
-	comment := task3.Comment{
-		Id:     2,
-		PostId: 2,
-	}
-	task3.DB.Delete(&comment)
+	// comment := task3.Comment{
+	// 	Id:     2,
+	// 	PostId: 2,
+	// }
+	// task3.DB.Delete(&comment)
+
+	// task4
+	models.CreateTable()
+
+	r := gin.Default()
+	routers.UserRouterInit(r)
+	routers.PostRouterInit(r)
+	routers.CommentRouterInit(r)
+
+	r.Run(":9000")
 
 }
